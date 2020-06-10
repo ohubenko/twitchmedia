@@ -30,11 +30,11 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "twitchmedia.herokuapp.com"
-    "twitch-media.me"
-    "www.twitch-media.me"
+    'localhost',
+    '"127.0.0.1',
+    'twitchmedia.herokuapp.com',
+    'twitch-media.me',
+    'www.twitch-media.me',
 ]
 
 # Application definition
