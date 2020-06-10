@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'twitchmedia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'twitch_media',
+        'NAME': os.getenv('db_name'),
         'USER': os.getenv('user_db'),
         'PASSWORD': os.getenv('pass_db'),
         'HOST': '127.0.0.1',

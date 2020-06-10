@@ -1,1 +1,1 @@
-web: gunicorn twitchmedia.wsgi
+web: gunicorn twitchmedia:application
