@@ -33,7 +33,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "twitchmedia.herokuapp.com"
-    "twitch-media.com"
+    "twitch-media.me"
+    "www.twitch-media.me"
 ]
 
 # Application definition
