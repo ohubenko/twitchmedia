@@ -35,7 +35,8 @@ class Profile(models.Model):
     #                             on_delete=models.CASCADE,
     #                             primary_key=True)
     tg_chat_id = models.IntegerField("ID чата Telegram",
-                                     unique=True)
+                                     unique=True,
+                                     primary_key=True)
     tg_name = models.TextField("Имя пользователя Telegram",
                                max_length=50)
     tg_auth_key = models.TextField(max_length=10, default=tg_chat_id)
