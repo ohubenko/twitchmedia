@@ -31,9 +31,9 @@ class VKProfile(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,
-                                on_delete=models.CASCADE,
-                                primary_key=True)
+    # user = models.OneToOneField(User,
+    #                             on_delete=models.CASCADE,
+    #                             primary_key=True)
     tg_chat_id = models.IntegerField("ID чата Telegram",
                                      unique=True)
     tg_name = models.TextField("Имя пользователя Telegram",
