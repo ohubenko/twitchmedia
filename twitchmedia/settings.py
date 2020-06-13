@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'twitchmedia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('db_name'),
-        'USER': os.environ.get('user_db'),
-        'PASSWORD': os.environ.get('pass_db'),
-        'HOST': os.environ.get('db_host'),
+        'NAME': str(os.environ.get('db_name')),
+        'USER': str(os.environ.get('user_db')),
+        'PASSWORD': str(os.environ.get('pass_db')),
+        'HOST': str(os.environ.get('db_host')),
         'PORT': '5432',
     }
 }
