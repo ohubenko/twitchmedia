@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Profile
-from .serializers import ProfileListSerializer, ProfileCreateSerializer
+from .serializers import ProfileListSerializer, ProfileCreateSerializer, ProfileSerializer
 
 
 class ProfileListView(APIView):
@@ -11,6 +11,15 @@ class ProfileListView(APIView):
     def get(self, requset):
         profiles = Profile.objects
         serializer = ProfileListSerializer(profiles, many=True)
+        return Response(serializer.data)
+
+
+class ProfileView(APIView):
+    """Вывод пользователя"""
+
+    def get(self, requset, chat_id):
+        profile = Profile.objects.get(tg_chat_id=chat_id)
+        serializer = ProfileSerializer(profile)
         return Response(serializer.data)
 
 
