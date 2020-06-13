@@ -85,17 +85,8 @@ WSGI_APPLICATION = 'twitchmedia.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': str(os.environ.get('db_name')),
-        'USER': str(os.environ.get('user_db')),
-        'PASSWORD': str(os.environ.get('pass_db')),
-        'HOST': str(os.environ.get('db_host')),
-        'PORT': '5432',
-    }
-}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
