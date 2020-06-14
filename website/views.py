@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Profile
-from .serializers import ProfileListSerializer, ProfileCreateSerializer, ProfileSerializer
+from .serializers import ProfileListSerializer, ProfileCreateSerializer, ProfileSerializer, ProfileSubscribeSerializer
 
 
 class ProfileListView(APIView):
@@ -34,3 +34,15 @@ class ProfileCreateView(APIView):
         if profile.is_valid():
             profile.save()
         return Response(status=201)
+
+
+class ProfileAddSubscribe(APIView):
+    """Добавление подписки для пользователя"""
+
+    def post(self, request):
+        serializer = ProfileSubscribeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=201)
+        else:
+            return Response(status=400)

@@ -7,6 +7,7 @@ from django.dispatch import receiver
 class TwitchProfile(models.Model):
     name_twitch = models.TextField("Имя пользователя", unique=True, max_length=15, blank=True)
     url = models.URLField(unique=True, blank=True)
+
     # date = models.DateTimeField("Дата окончания подписки", blank=True)
 
     class Meta:
@@ -15,7 +16,7 @@ class TwitchProfile(models.Model):
 
 
 class TwitchStreamer(models.Model):
-    twitch_profile = models.OneToOneField(TwitchProfile, on_delete=models.CASCADE, related_name="Профиль twitch+")
+    twitch_profile = models.ForeignKey(TwitchProfile, on_delete=models.CASCADE, related_name="Профиль twitch+")
     oidc_token = models.TextField(unique=True, max_length=128, default=None, blank=True)
     sub_list = models.ManyToManyField(TwitchProfile)
 
@@ -49,7 +50,8 @@ class Profile(models.Model):
     # twitch_profile = models.OneToOneField(TwitchProfile, on_delete=models.CASCADE, default=None, blank=True)
 
     # vk_list = #Добавить список групп на которые он подписан
-    subscribe_list = models.ManyToManyField(TwitchProfile, verbose_name="Список подписок")
+    subscribe_list = models.ManyToManyField(TwitchProfile, verbose_name="Список подписок",
+                                            related_name="subscribe_list")
 
     class Meta:
         verbose_name = "Профиль"
