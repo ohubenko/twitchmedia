@@ -6,8 +6,8 @@ from django.dispatch import receiver
 
 class TelegramProfile(models.Model):
     chat_id = models.SmallIntegerField(verbose_name="ID чата с ботом", unique=True, primary_key=True)
-    username = models.CharField(verbose_name="Имя пользователя")
-    name = models.CharField(verbose_name="Имя")
+    username = models.TextField(verbose_name="Имя пользователя")
+    name = models.TextField(verbose_name="Имя")
 
     def __str__(self):
         return self.name + ":" + str(self.chat_id)
@@ -18,9 +18,9 @@ class TelegramProfile(models.Model):
 
 
 class TwitchProfile(models.Model):
-    username = models.CharField(max_length=15, verbose_name="Имя пользователя", primary_key=True)
+    username = models.TextField(max_length=15, verbose_name="Имя пользователя", primary_key=True)
     url = models.URLField(verbose_name="Ссылка на профиль Twitch")
-    oidc_token = models.CharField(verbose_name="OIDC токен", blank=True, unique=True)
+    oidc_token = models.TextField(verbose_name="OIDC токен", blank=True, unique=True)
 
     def __str__(self):
         return self.username
@@ -32,7 +32,7 @@ class TwitchProfile(models.Model):
 
 class VKGroup(models.Model):
     id = models.SmallIntegerField(verbose_name="ID Группы", primary_key=True)
-    name = models.CharField(verbose_name="Название группы")
+    name = models.TextField(verbose_name="Название группы")
 
     def __str__(self):
         return self.name
@@ -43,8 +43,8 @@ class VKGroup(models.Model):
 
 
 class VKProfile(models.Model):
-    name = models.CharField(verbose_name="Имя")
-    vk_token = models.CharField(verbose_name="Токкен доступа", blank=True)
+    name = models.TextField(verbose_name="Имя")
+    vk_token = models.TextField(verbose_name="Токкен доступа", blank=True)
     url = models.URLField(verbose_name="URL ссылка на профиль")
     vk_groups = models.ManyToManyField(VKGroup, verbose_name="Группы VK", blank=True)
 
