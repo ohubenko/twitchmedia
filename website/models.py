@@ -75,7 +75,7 @@ class Profile(models.Model):
     vk_profile = models.OneToOneField(VKProfile, on_delete=models.CASCADE, verbose_name="Профиль VK", blank=True)
     twitch_profile = models.OneToOneField(TwitchProfile, on_delete=models.CASCADE, verbose_name="Профиль Twitch",
                                           blank=True)
-    subscribe_list = models.ManyToManyField(Subscribe, verbose_name="Список подписок")
+    subscribe_list = models.ManyToManyField(Subscribe, verbose_name="Список подписок",blank=True)
 
     class Meta:
         verbose_name = "Профиль"
