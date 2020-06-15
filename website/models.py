@@ -71,7 +71,7 @@ class Profile(models.Model):
         verbose_name_plural = "Профили"
 
 
-class Subscribe(models.Model):
+class Subscription(models.Model):
     twitch_profile = models.OneToOneField(TwitchProfile, verbose_name="Twitch профиль", primary_key=True,
                                           on_delete=models.CASCADE)
     time_end_of_subs = models.DateTimeField(verbose_name="Конец подписки", blank=True, null=True)
