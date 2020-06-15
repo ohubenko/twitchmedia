@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import TelegramProfile, TwitchProfile, VKGroup, VKProfile, Subscription, Profile
+from .models import *
 
-admin.site.register(Profile)
 admin.site.register(TelegramProfile)
 admin.site.register(TwitchProfile)
+admin.site.register(Profile)
 admin.site.register(VKGroup)
 admin.site.register(VKProfile)
-admin.site.register(Subscription)

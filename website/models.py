@@ -19,7 +19,11 @@ class TwitchProfile(models.Model):
     username = models.TextField(max_length=15, verbose_name="Имя пользователя", primary_key=True, unique=True)
     url = models.URLField(verbose_name="Ссылка на профиль Twitch", default="https://twitch.tv/" + str(username),
                           blank=True)
-    oidc_token = models.TextField(verbose_name="OIDC токен", blank=True, unique=True)
+    message = models.TextField(max_length=140, verbose_name="Текст уведомления",
+                               default="Пользователь " + str(username) + " начал прямую трансляцию.\n Заходи " + str(
+                                   url),
+                               blank=True)
+    oidc = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -43,9 +47,9 @@ class VKGroup(models.Model):
 
 class VKProfile(models.Model):
     name = models.TextField(verbose_name="Имя")
-    vk_token = models.TextField(verbose_name="Токкен доступа", blank=True)
+    token = models.TextField(verbose_name="Токкен доступа", blank=True)
     url = models.URLField(verbose_name="URL ссылка на профиль")
-    vk_groups = models.ManyToManyField(VKGroup, verbose_name="Группы VK", blank=True)
+    groups = models.ManyToManyField(VKGroup, verbose_name="Группы VK", blank=True)
 
     def __str__(self):
         return self.name
@@ -62,27 +66,12 @@ class Profile(models.Model):
                                       null=True)
     twitch_profile = models.OneToOneField(TwitchProfile, on_delete=models.CASCADE, verbose_name="Профиль Twitch",
                                           blank=True, null=True)
+    subscriptions = models.ManyToManyField(TwitchProfile, verbose_name="Подписки", related_name="subscriptions",
+                                           blank=True)
 
     def __str__(self):
-        return self.tg_profile.name+":"+str(self.tg_profile.chat_id)
+        return self.tg_profile.name + ":" + str(self.tg_profile.chat_id)
 
     class Meta:
         verbose_name = "Профиль"
         verbose_name_plural = "Профили"
-
-
-class Subscription(models.Model):
-    twitch_profile = models.OneToOneField(TwitchProfile, verbose_name="Twitch профиль", primary_key=True,
-                                          on_delete=models.CASCADE)
-    time_end_of_subs = models.DateTimeField(verbose_name="Конец подписки", blank=True, null=True)
-
-    sub_list = models.ManyToManyField(Profile, verbose_name="Подписчики", related_name="Подписчики", blank=True)
-
-    # Профиль
-
-    def __str__(self):
-        return "Подписка на " + self.twitch_profile.username
-
-    class Meta:
-        verbose_name = "Подписка"
-        verbose_name_plural = "Подписки"
