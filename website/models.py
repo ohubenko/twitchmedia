@@ -64,7 +64,7 @@ class Profile(models.Model):
                                           blank=True, null=True)
 
     def __str__(self):
-        return self.tg_profile.name
+        return self.tg_profile.name+":"+str(self.tg_profile.chat_id)
 
     class Meta:
         verbose_name = "Профиль"
