@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import *
-from .serializers import *
+from .models import Profile, TelegramProfile, TwitchProfile
+from .serializers import ProfileSerializer, TelegramProfileSerializer, TwitchProfileSerializer
 
 
 class ProfileListView(APIView):
@@ -44,7 +44,6 @@ class ProfileCreateView(APIView):
     """Создание профиля"""
 
     def post(self, request):
-        # TODO: С запроса вытянуть данные для создания профиля
         tg, ctg = TelegramProfile.objects.get_or_create(
             chat_id=request.data.get("chat_id"),
             username=request.data.get("username"),
@@ -62,10 +61,11 @@ class ProfileView(APIView):
 
     def get(self, request, chat_id):
         try:
-            profile = Profile.objects.get(tg_profile=TelegramProfile.objects.get(chat_id=chat_id))
+            tg_profile = TelegramProfile.objects.get(chat_id=chat_id)
+            profile = Profile.objects.get(tg_profile=tg_profile)
             serializer = ProfileSerializer(profile)
             return Response(serializer.data)
-        except Profile.DoesNotExist or TelegramProfile.DoesNotExist:
+        except TelegramProfile.DoesNotExist or Profile.DoesNotExist:
             return Response(status=404)
 
 
