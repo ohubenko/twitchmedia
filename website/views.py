@@ -45,8 +45,16 @@ class ProfileCreateView(APIView):
 
     def post(self, request):
         # TODO: С запроса вытянуть данные для создания профиля
-
-        return Response(status=201)
+        tg, ctg = TelegramProfile.objects.get_or_create(
+            chat_id=request.data.get("chat_id"),
+            username=request.data.get("username"),
+            name=request.data.get("name"),
+        )
+        profile, cp = Profile.objects.get_or_create(tg_profile=tg)
+        if ctg and cp:
+            return Response(status=201)
+        else:
+            return Response(status=403)
 
 
 class ProfileView(APIView):
