@@ -86,7 +86,7 @@ class ProfileMakeSubscriptions(APIView):
                     'Authorization': str(os.environ.get('twitch_bearer'))
                 }
                 r_id = requests.get("https://api.twitch.tv/helix/users?login=" + name_streamer, headers=headers)
-                streamer_id = r_id.json()[0].get('id')
+                streamer_id = r_id.json().get("data")[0].get("id")
                 url = "https://api.twitch.tv/helix/webhooks/hub?hub.callback=https://twitch-media.com/api/v1/twitch" \
                       "/&hub.mode=subscribe&hub.topic=https://api.twitch.tv/helix/streams?user_id=" + streamer_id + "&" + \
                       "hub.lease_seconds=864000"
