@@ -94,7 +94,7 @@ class ProfileMakeSubscriptions(APIView):
                     'hub.callback': 'https://twitch-media.me/api/v1/profiles/twitch/' + str(
                         name_streamer) + '/webhook/',
                     'hub.mode': 'subscribe',
-                    'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(r_id),
+                    'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(streamer_id),
                     'hub.lease_seconds': 864000}
                 url = "https://api.twitch.tv/helix/webhooks/hub"
                 r_p = requests.post(url, headers=headers, data=payload)
