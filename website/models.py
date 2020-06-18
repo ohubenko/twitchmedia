@@ -36,6 +36,7 @@ class TwitchProfile(models.Model):
 class VKGroup(models.Model):
     id = models.SmallIntegerField(verbose_name="ID Группы", primary_key=True)
     name = models.TextField(verbose_name="Название группы")
+    secret_key = models.TextField(verbose_name="Секретный ключ", blank=True)
 
     def __str__(self):
         return self.name

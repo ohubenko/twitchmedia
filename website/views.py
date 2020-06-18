@@ -1,8 +1,11 @@
+import os
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Profile, TelegramProfile, TwitchProfile
 from .serializers import ProfileSerializer, TelegramProfileSerializer, TwitchProfileSerializer
+import requests
 
 
 class ProfileListView(APIView):
@@ -78,7 +81,16 @@ class ProfileMakeSubscriptions(APIView):
             name_streamer = request.data.get("streamer")
             twitch_profile, created = TwitchProfile.objects.get_or_create(username=name_streamer)
             if created:
-                # TODO: Запрос на twitch с созданием подписки
+                headers = {
+                    'Client-ID': str(os.environ.get('client_id')),
+                    'Authorization': str(os.environ.get('twitch_bearer'))
+                }
+                r_id = requests.get("https://api.twitch.tv/helix/users?login=" + name_streamer, headers=headers)
+                streamer_id = r_id.json()[0].get('id')
+                url = "https://api.twitch.tv/helix/webhooks/hub?hub.callback=https://twitch-media.com/api/v1/twitch" \
+                      "/&hub.mode=subscribe&hub.topic=https://api.twitch.tv/helix/streams?user_id=" + streamer_id + "&" + \
+                      "hub.lease_seconds=864000"
+                r_p = request.post(url, headers=headers)
                 print("Создан профиль Twitch")
             profile.subscriptions.add(twitch_profile)
             return Response(status=201)
@@ -92,3 +104,12 @@ class ProfileMakeSubscriptions(APIView):
             return Response(serializer.data.get("subscriptions"))
         except Profile.DoesNotExist or TelegramProfile.DoesNotExist:
             return Response(status=404)
+
+
+class TwitchWebHookSubscriptions(APIView):
+    def get(self, request):
+        try:
+            resp = request.data.get("hub.challenge")
+            return Response(data=resp, status=200)
+        except Exception:
+            return Response(status=500)
