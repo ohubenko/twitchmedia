@@ -90,10 +90,11 @@ class ProfileMakeSubscriptions(APIView):
                 print(r_id)
                 print(r_id.status_code)
                 streamer_id = r_id.json().get("data")[0].get("id")
-                payload = {'hub.callback': 'https://twitch-media.me/api/v1/twitch/',
-                           'hub.mode': 'subscribe',
-                           'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(r_id),
-                           'hub.lease_seconds': 864000}
+                payload = {
+                    'hub.callback': 'https://twitch-media.me/api/v1/profiles/twitch/' + str(name_streamer) + '/webhook',
+                    'hub.mode': 'subscribe',
+                    'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(r_id),
+                    'hub.lease_seconds': 864000}
                 url = "https://api.twitch.tv/helix/webhooks/hub"
                 r_p = requests.post(url, headers=headers, data=payload)
                 print(r_p)
@@ -114,7 +115,9 @@ class ProfileMakeSubscriptions(APIView):
 
 
 class TwitchWebHookSubscriptions(APIView):
-    def get(self, request):
-        print(request)
-        resp = request.data.get("hub.challenge")
-        return Response(data=resp, status=200)
+    def get(self, request, streamer):
+        try:
+            tp = TwitchProfile.objects.get(username=streamer)
+            return Response(content_type="text/html", data=request.data.get("hub.challenge"), status=200)
+        except TelegramProfile.DoesNotExist:
+            return Response(status=404)
