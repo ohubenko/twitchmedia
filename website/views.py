@@ -83,7 +83,7 @@ class ProfileMakeSubscriptions(APIView):
             if created:
                 headers = {
                     'Client-ID': str(os.environ.get('client_id')),
-                    'Authorization': str(os.environ.get('twitch_bearer'))
+                    'Authorization': "Bearer " + str(os.environ.get('twitch_bearer'))
                 }
                 r_id = requests.get("https://api.twitch.tv/helix/users?login=" + name_streamer, headers=headers)
                 streamer_id = r_id.json().get("data")[0].get("id")
