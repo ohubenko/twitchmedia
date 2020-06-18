@@ -90,7 +90,7 @@ class ProfileMakeSubscriptions(APIView):
                 print(r_id)
                 print(r_id.status_code)
                 streamer_id = r_id.json().get("data")[0].get("id")
-                payload = {'hub.callback': 'https://twitch-media.com/api/v1/twitch/',
+                payload = {'hub.callback': 'https://twitch-media.me/api/v1/twitch/',
                            'hub.mode': 'subscribe',
                            'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(r_id),
                            'hub.lease_seconds': 864000}
