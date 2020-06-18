@@ -85,12 +85,13 @@ class ProfileMakeSubscriptions(APIView):
                     'Client-ID': str(os.environ.get('client_id')),
                     'Authorization': "Bearer " + str(os.environ.get('twitch_bearer'))
                 }
-                r_id = requests.get("https://api.twitch.tv/helix/users?login=" + name_streamer, headers=headers)
+                r_id = requests.get("https://api.twitch.tv/helix/users?login=" + name_streamer,
+                                    headers=headers)
                 streamer_id = r_id.json().get("data")[0].get("id")
                 url = "https://api.twitch.tv/helix/webhooks/hub?hub.callback=https://twitch-media.com/api/v1/twitch" \
                       "/&hub.mode=subscribe&hub.topic=https://api.twitch.tv/helix/streams?user_id=" + streamer_id + "&" + \
                       "hub.lease_seconds=864000"
-                r_p = request.post(url, headers=headers)
+                r_p = requests.post(url, headers=headers)
                 print("Создан профиль Twitch")
             profile.subscriptions.add(twitch_profile)
             return Response(status=201)
