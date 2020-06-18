@@ -119,7 +119,6 @@ class TwitchWebHookSubscriptions(APIView):
     def get(self, request, streamer):
         try:
             tp = TwitchProfile.objects.get(username=streamer)
-            print(request.args.get("hub.challenge"))
-            return Response(content_type="text/html", data=request.args.get("hub.challenge"), status=200)
+            return Response(content_type="text/html", data=request.GET['hub.challenge'], status=200)
         except TelegramProfile.DoesNotExist:
             return Response(status=404)
