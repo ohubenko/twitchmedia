@@ -113,9 +113,7 @@ class ProfileMakeSubscriptions(APIView):
 
 class TwitchWebHookSubscriptions(APIView):
     def get(self, request):
-        try:
-            print(request)
-            resp = request.data.get("hub.challenge")
-            return Response(data=resp, status=200)
-        except Exception:
-            return Response(status=500)
+        print(request)
+        resp = request.data.get("hub.challenge")
+        return Response(data=resp, status=200)
+
