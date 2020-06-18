@@ -90,10 +90,12 @@ class ProfileMakeSubscriptions(APIView):
                 print(r_id)
                 print(r_id.status_code)
                 streamer_id = r_id.json().get("data")[0].get("id")
-                url = "https://api.twitch.tv/helix/webhooks/hub?hub.callback=https://twitch-media.com/api/v1/twitch" \
-                      "/&hub.mode=subscribe&hub.topic=https://api.twitch.tv/helix/streams?user_id=" + streamer_id + "&" + \
-                      "hub.lease_seconds=864000"
-                r_p = requests.post(url, headers=headers)
+                payload = {'hub.callback': 'https://twitch-media.com/api/v1/twitch/',
+                           'hub.mode': 'subscribe',
+                           'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=' + str(r_id),
+                           'hub.lease_seconds': 864000}
+                url = "https://api.twitch.tv/helix/webhooks/hub"
+                r_p = requests.post(url, headers=headers, data=payload)
                 print(r_p)
                 print(r_p.status_code)
                 print("Создан профиль Twitch")
@@ -116,4 +118,3 @@ class TwitchWebHookSubscriptions(APIView):
         print(request)
         resp = request.data.get("hub.challenge")
         return Response(data=resp, status=200)
-
