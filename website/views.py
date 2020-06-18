@@ -98,7 +98,6 @@ class ProfileMakeSubscriptions(APIView):
                     'hub.lease_seconds': 864000}
                 url = "https://api.twitch.tv/helix/webhooks/hub"
                 r_p = requests.post(url, headers=headers, data=payload)
-                print(r_p.json())
                 print(r_p.status_code)
                 print("Создан профиль Twitch")
             profile.subscriptions.add(twitch_profile)
