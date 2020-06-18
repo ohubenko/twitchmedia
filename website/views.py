@@ -1,4 +1,6 @@
 import os
+import time
+from threading import Thread
 
 from django.http import HttpResponse
 from rest_framework.response import Response
@@ -115,11 +117,35 @@ class ProfileMakeSubscriptions(APIView):
             return Response(status=404)
 
 
+def alert_bot(twitch_profile):
+    time.sleep(20)
+    users = []
+    for value in twitch_profile.subscriptions.all().values():
+        users.append(value.get("tg_profile_id"))
+    payload = {
+        "auth_key": str(os.environ["auth_key_bot"]),
+        "streamer": str(twitch_profile.username),
+        # "message": str(twitch_profile.message),
+        "url": str(twitch_profile.url),
+        "users": users
+    }
+    print(requests.post("https://twitchmediabot.herokuapp.com/", data=payload).status_code)
+
+
 class TwitchWebHookSubscriptions(APIView):
     def get(self, request, streamer):
         try:
             tp = TwitchProfile.objects.get(username=streamer)
             content = str(request.GET['hub.challenge'])
-            return HttpResponse(content, content_type="text/plain", status=200,)
+            return HttpResponse(content, content_type="text/plain", status=200, )
         except TelegramProfile.DoesNotExist:
+            return Response(status=404)
+
+    def post(self, request, streamer):
+        try:
+            twitch_profile = TwitchProfile.objects.get(username=streamer)
+            thread = Thread(target=alert_bot(twitch_profile))
+            thread.start()
+            return Response(status=200)
+        except TwitchProfile.DoesNotExist:
             return Response(status=404)
