@@ -9,4 +9,5 @@ urlpatterns = [
     path("profiles/<int:chat_id>/subscriptions/", views.ProfileMakeSubscriptions.as_view()),
     path("profiles/twitch/<str:streamer>/webhook/", views.TwitchWebHookSubscriptions.as_view()),
     path("profiles/twitch/<str:streamer>/", views.TwitchProfileView.as_view()),
+    path("profiles/twitch/<str:streamer>/social/", views.TwitchSocialView.as_view()),
 ]

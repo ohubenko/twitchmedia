@@ -20,6 +20,11 @@ class TwitchProfile(models.Model):
     url = models.URLField(verbose_name="Ссылка на профиль Twitch", blank=True)
     message = models.TextField(max_length=140, verbose_name="Текст уведомления", blank=True)
     oidc = models.TextField(blank=True, null=True)
+    instagram_url = models.URLField(verbose_name="Ссылка на страницу в инстаграме", blank=True, null=True)
+    vk_group_url = models.URLField(verbose_name="Ссылка на группу VK", blank=True, null=True)
+    vk_main_url = models.URLField(verbose_name="Ссылка на страницу VK", blank=True, null=True)
+    telegram_channel_url = models.URLField(verbose_name="Ссылка на канал в Telegram", blank=True, null=True)
+    discord_channel_url = models.URLField(verbose_name="Ссылка на канал в Discord", blank=True, null=True)
 
     def __str__(self):
         return self.username

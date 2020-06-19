@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from .models import Profile, TelegramProfile, TwitchProfile
 from .serializers import ProfileSerializer, TelegramProfileSerializer, TwitchProfileSerializer, \
-    TwitchProfileAlertSerializer
+    TwitchProfileAlertSerializer, TwitchSocialSerializer
 import requests
 
 
@@ -84,6 +84,15 @@ class ProfileView(APIView):
             profile.subscriptions.remove(tw_profile)
             return Response(status=201)
         except TelegramProfile.DoesNotExist or Profile.DoesNotExist or TwitchProfile.DoesNotExist:
+            return Response(status=404)
+
+    def delete(self, request, chat_id):
+        try:
+            tg_profile = TelegramProfile.objects.get(chat_id=chat_id)
+            profile = Profile.objects.get(tg_profile=tg_profile)
+            tg_profile.delete()
+            return Response(status=204)
+        except TelegramProfile.DoesNotExist or Profile.DoesNotExist:
             return Response(status=404)
 
 
@@ -165,6 +174,16 @@ class TwitchProfileView(APIView):
         try:
             tp = TwitchProfile.objects.get(username=streamer)
             serializer = TwitchProfileAlertSerializer(tp)
+            return Response(serializer.data)
+        except TwitchProfile.DoesNotExist:
+            return Response(status=404)
+
+
+class TwitchSocialView(APIView):
+    def get(self, request, streamer):
+        try:
+            tw = TwitchProfile.objects.get(username=streamer)
+            serializer = TwitchSocialSerializer(tw)
             return Response(serializer.data)
         except TwitchProfile.DoesNotExist:
             return Response(status=404)

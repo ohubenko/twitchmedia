@@ -51,3 +51,9 @@ class TwitchProfileAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitchProfile
         fields = ("username", "message", "subscriptions")
+
+
+class TwitchSocialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitchProfile
+        fields = ("url", "instagram_url", "vk_group_url", "vk_main_url", "telegram_channel_url")
