@@ -122,7 +122,7 @@ def alert_bot(twitch_profile):
     print("Сбор данных для отправки боту")
     users = []
     for value in twitch_profile.subscriptions.iterator():
-        users.append(value.get("tg_profile_id"))
+        users.append(value.tg_profile.chat_id)
     payload = {
         "auth_key": str(os.environ["auth_key_bot"]),
         "streamer": str(twitch_profile.username),
