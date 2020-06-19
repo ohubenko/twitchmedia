@@ -143,6 +143,7 @@ class TwitchWebHookSubscriptions(APIView):
 
     def post(self, request, streamer):
         try:
+            print("Изминение статсу стрима "+str(streamer))
             twitch_profile = TwitchProfile.objects.get(username=streamer)
             thread = Thread(target=alert_bot(twitch_profile))
             thread.start()
