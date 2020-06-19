@@ -126,7 +126,7 @@ def alert_bot(twitch_profile):
     payload = {
         "auth_key": str(os.environ["auth_key_bot"]),
         "streamer": str(twitch_profile.username),
-        # "message": str(twitch_profile.message),
+        "message": str(twitch_profile.message),
         "url": str(twitch_profile.url),
         "users": users
     }
