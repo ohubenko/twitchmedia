@@ -5,9 +5,10 @@ from threading import Thread
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework.renderers import JSONRenderer
 from .models import Profile, TelegramProfile, TwitchProfile
-from .serializers import ProfileSerializer, TelegramProfileSerializer, TwitchProfileSerializer
+from .serializers import ProfileSerializer, TelegramProfileSerializer, TwitchProfileSerializer, \
+    TwitchProfileAlertSerializer
 import requests
 
 
@@ -118,19 +119,10 @@ class ProfileMakeSubscriptions(APIView):
 
 
 def alert_bot(twitch_profile):
-    time.sleep(4)
-    print("Сбор данных для отправки боту")
-    users = []
-    for value in twitch_profile.subscriptions.iterator():
-        users.append(value.tg_profile.chat_id)
-    payload = {
-        "auth_key": str(os.environ["auth_key_bot"]),
-        "streamer": str(twitch_profile.username),
-        "message": str(twitch_profile.message),
-        "url": str(twitch_profile.url),
-        "users": users
-    }
-    print(requests.post("https://twitchmediabot.herokuapp.com/twitch_alert", data=payload).status_code)
+    time.sleep(1)
+    print("Отправка имени стримера боту")
+    print(requests.post("https://twitchmediabot.herokuapp.com/twitch_alert",
+                        data={"streamer": str(twitch_profile.username)}).status_code)
 
 
 class TwitchWebHookSubscriptions(APIView):
@@ -144,10 +136,24 @@ class TwitchWebHookSubscriptions(APIView):
 
     def post(self, request, streamer):
         try:
-            print("Изминение статсу стрима "+str(streamer))
-            twitch_profile = TwitchProfile.objects.get(username=streamer)
-            thread = Thread(target=alert_bot(twitch_profile))
-            thread.start()
-            return Response(status=200)
+            print(request.data + "\n" + request.args)
+            if request.data or request.args == "":
+                print("Стрим окончен")
+            else:
+                print("Изминение статуса стрима " + str(streamer))
+                twitch_profile = TwitchProfile.objects.get(username=streamer)
+                thread = Thread(target=alert_bot(twitch_profile))
+                thread.start()
+                return Response(status=200)
+        except TwitchProfile.DoesNotExist:
+            return Response(status=404)
+
+
+class TwitchProfileView(APIView):
+    def get(self, request, streamer):
+        try:
+            tp = TwitchProfile.objects.get(username=streamer)
+            serializer = TwitchProfileAlertSerializer(tp)
+            return Response(serializer.data)
         except TwitchProfile.DoesNotExist:
             return Response(status=404)

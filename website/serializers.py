@@ -29,3 +29,25 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         exclude = ("vk_profile",)
+
+
+class TelegramProfileAlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TelegramProfile
+        fields = ("chat_id",)
+
+
+class ProfileAlertSerializer(serializers.ModelSerializer):
+    tg_profile = TelegramProfileAlertSerializer()
+
+    class Meta:
+        model = Profile
+        fields = ("tg_profile",)
+
+
+class TwitchProfileAlertSerializer(serializers.ModelSerializer):
+    subscriptions = ProfileAlertSerializer(many=True)
+
+    class Meta:
+        model = TwitchProfile
+        fields = ("username", "message", "subscriptions")

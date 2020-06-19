@@ -17,12 +17,8 @@ class TelegramProfile(models.Model):
 
 class TwitchProfile(models.Model):
     username = models.TextField(max_length=15, verbose_name="Имя пользователя", primary_key=True, unique=True)
-    url = models.URLField(verbose_name="Ссылка на профиль Twitch", default="https://twitch.tv/" + str(username),
-                          blank=True)
-    message = models.TextField(max_length=140, verbose_name="Текст уведомления",
-                               default="Пользователь " + str(username) + " начал прямую трансляцию.\n Заходи " + str(
-                                   url),
-                               blank=True)
+    url = models.URLField(verbose_name="Ссылка на профиль Twitch", blank=True)
+    message = models.TextField(max_length=140, verbose_name="Текст уведомления", blank=True)
     oidc = models.TextField(blank=True, null=True)
 
     def __str__(self):
