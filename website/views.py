@@ -118,9 +118,10 @@ class ProfileMakeSubscriptions(APIView):
 
 
 def alert_bot(twitch_profile):
-    time.sleep(20)
+    time.sleep(4)
+    print("Сбор данных для отправки боту")
     users = []
-    for value in twitch_profile.subscriptions.all().values():
+    for value in twitch_profile.subscriptions.iterator():
         users.append(value.get("tg_profile_id"))
     payload = {
         "auth_key": str(os.environ["auth_key_bot"]),
