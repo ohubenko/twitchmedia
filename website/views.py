@@ -137,7 +137,7 @@ class TwitchWebHookSubscriptions(APIView):
     def post(self, request, streamer):
         try:
             print(str(request.data))
-            if request.data or request.args == "":
+            if request.data == "":
                 print("Стрим окончен")
             else:
                 print("Изминение статуса стрима " + str(streamer))
