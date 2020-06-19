@@ -146,6 +146,7 @@ def alert_bot(twitch_profile):
 
 
 class TwitchWebHookSubscriptions(APIView):
+    """Установка WebHook Twitch"""
     def get(self, request, streamer):
         try:
             tp = TwitchProfile.objects.get(username=streamer)
@@ -170,6 +171,7 @@ class TwitchWebHookSubscriptions(APIView):
 
 
 class TwitchProfileView(APIView):
+    """Список подписаных пользователей"""
     def get(self, request, streamer):
         try:
             tp = TwitchProfile.objects.get(username=streamer)
@@ -180,6 +182,7 @@ class TwitchProfileView(APIView):
 
 
 class TwitchSocialView(APIView):
+    """Список ссылок на соц. сети стримера"""
     def get(self, request, streamer):
         try:
             tw = TwitchProfile.objects.get(username=streamer)
