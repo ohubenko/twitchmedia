@@ -129,7 +129,7 @@ def alert_bot(twitch_profile):
         "url": str(twitch_profile.url),
         "users": users
     }
-    print(requests.post("https://twitchmediabot.herokuapp.com/", data=payload).status_code)
+    print(requests.post("https://twitchmediabot.herokuapp.com/twitch_alert", data=payload).status_code)
 
 
 class TwitchWebHookSubscriptions(APIView):
