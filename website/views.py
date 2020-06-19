@@ -75,6 +75,17 @@ class ProfileView(APIView):
         except TelegramProfile.DoesNotExist or Profile.DoesNotExist:
             return Response(status=404)
 
+    def post(self, request, chat_id):
+        try:
+            tg_profile = TelegramProfile.objects.get(chat_id=chat_id)
+            profile = Profile.objects.get(tg_profile=tg_profile)
+            streamer = request.data.get('streamer')
+            tw_profile = TwitchProfile.objects.get(username=streamer)
+            profile.subscriptions.remove(tw_profile)
+            return Response(status=201)
+        except TelegramProfile.DoesNotExist or Profile.DoesNotExist or TwitchProfile.DoesNotExist:
+            return Response(status=404)
+
 
 class ProfileMakeSubscriptions(APIView):
     """Подписки пользователя"""
